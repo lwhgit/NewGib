@@ -1,0 +1,7 @@
+main.py
+
+ytutil.py
+    ytutil_search(query, max_result)
+        query검색어를 max_result갯수만큼 검색결과 반환
+            title: 제목
+            videoId: 비디오ID
