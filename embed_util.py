@@ -1,7 +1,16 @@
+import discord
+
+YOUTUBE_LINK = "https://www.youtube.com/watch?v="
+
 def yt_list(videos):
-    result = ""
-    
+    embed = discord.Embed()
     for i in range(0, len(videos)):
-        result += str(i) + "|" + videos[i]["title"] + "|" + videos[i]["videoId"] + "\n"
+        embed.add_field(name=str(i + 1) + "  " + videos[i]["title"], value=YOUTUBE_LINK + videos[i]["videoId"])
         
-    return result
+    return embed
+    
+def yt_detail(video):
+    embed = discord.Embed(title=video["title"] + "``" + video["duration"] + "``", description=YOUTUBE_LINK + video["videoId"])
+    embed.set_thumbnail(url=video["thumbnails"]["default"]["url"])
+    
+    return embed

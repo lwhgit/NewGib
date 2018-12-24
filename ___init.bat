@@ -2,8 +2,12 @@
 
 pip install --upgrade google-api-python-client
 pip install --upgrade google-auth google-auth-oauthlib google-auth-httplib2
-pip install discord.py
+pip install asyncio
+pip install PyNaCl
+pip install youtube_dl
+pip install discord
+pip install requests
 pip install gTTS
 
-echo ¿Ï·á.
+echo ï¿½Ï·ï¿½
 pause>nul

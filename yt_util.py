@@ -1,31 +1,55 @@
-# 유튜브 api 레퍼런스페이지에서 복붙해온 코드임. 뭐가뭔진 나도모름
-
-import google.oauth2.credentials
-
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from google_auth_oauthlib.flow import InstalledAppFlow
+import asyncio
+import json
+import urllib
+import urllib.request
 
 DEVELOPER_KEY = "AIzaSyCiBzYtWNgRXZWs5w2zqtp4Lqfve5GyGCY"
-YOUTUBE_API_SERVICE_NAME = "youtube"
-YOUTUBE_API_VERSION = "v3"
 
-def search(query, max_result):
-    youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
+import json
+import requests
 
-    search_response = youtube.search().list(
-        q=query,
-        part="id,snippet",
-        maxResults=max_result
-    ).execute()
+DEVELOPER_KEY = "AIzaSyCiBzYtWNgRXZWs5w2zqtp4Lqfve5GyGCY"
 
+def yt_search(q, maxResults):
+    results = requests.get("https://www.googleapis.com/youtube/v3/search", 
+        params = {
+            "q": q,
+            "maxResults": maxResults,
+            "part": "id,snippet",
+            "key": DEVELOPER_KEY
+        })
+
+
+    data = results.json()["items"]
+    
     videos = []
 
-    for search_result in search_response.get("items", []):
-        if search_result["id"]["kind"] == "youtube#video":
+    for video in data:
+        if (video["id"]["kind"] == "youtube#video"):
             videos.append({
-                "title": search_result["snippet"]["title"],
-                "videoId": search_result["id"]["videoId"]
+                "title": video["snippet"]["title"],
+                "thumbnails": video["snippet"]["thumbnails"],
+                "videoId": video["id"]["videoId"]
             });
 
     return videos
+
+def yt_video(videoId):
+    results = requests.get("https://www.googleapis.com/youtube/v3/videos", 
+        params = {
+            "id": videoId,
+            "part": "id,snippet,contentDetails",
+            "key": DEVELOPER_KEY
+        })
+
+
+    data = results.json()["items"][0]
+    
+    video = {
+        "title": data["snippet"]["title"],
+        "thumbnails": data["snippet"]["thumbnails"],
+        "videoId": data["id"],
+        "duration": data["contentDetails"]["duration"]
+    }
+    
+    return video
