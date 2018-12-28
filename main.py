@@ -132,7 +132,7 @@ async def on_message(message):
                         video = server_data.get_yt_play_list()[server_data.get_current_play_list_index()]
                         yt_detail_embed = embed_util.yt_detail(video)
                         
-                        msg = await client.send_message("재생 대기중...")
+                        await server_data.send_message("재생 대기중...")
                         await server_data.start_yt_player()
                     
         if (cmdLen >= 3):
@@ -242,5 +242,5 @@ def save_file(path, mode, content):
     f.close()
     
 
-login(0)
+login(1)
 #https://discordpy.readthedocs.io/en/latest/api.html#event-reference 참고하셈

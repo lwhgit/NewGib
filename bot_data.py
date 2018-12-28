@@ -183,6 +183,18 @@ class ServerData:
     def get_yt_search_list_size(self):
         return len(self.yt_search_list)
     
+    def on_tts_player_after(self, t):
+        if (t):
+            self.resume_yt_player()
+    
     def play_tts(self, dir):
-        self.tts_player = self.voice_client.create_ffmpeg_player(dir)
+        tmp = False
+        if (self.is_yt_player_playing()):
+            self.pause_yt_player()
+            tmp = True
+        
+        self.tts_player = self.voice_client.create_ffmpeg_player(dir, after=(lambda:
+            self.on_tts_player_after(tmp)
+        ))
+        
         self.tts_player.start()
